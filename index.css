@@ -1,0 +1,25 @@
+body {
+  background: #fafafa;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color-scheme: light;
+  gap: 2rem;
+  margin: 96px 0;
+}
+
+#container {
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  border: 1px solid black;
+}
+
+#liveImage {
+  > * {
+    max-width: 600px;
+  }
+}
+
