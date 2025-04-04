@@ -1,0 +1,27 @@
+{
+  "name": "rgb-color-mixer-pages",
+  "homepage": "https://bennyschudel.github.io/rgb-color-mixer",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@vueuse/core": "^13.0.0",
+    "easy-cropper": "^0.3.0-alpha2",
+    "vite-plugin-bundlesize": "^0.1.0",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "gh-pages": "^6.3.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vue-tsc": "^2.2.4"
+  }
+}

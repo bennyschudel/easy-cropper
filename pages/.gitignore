@@ -1,0 +1,31 @@
+## editors
+/.idea
+/.vscode
+
+## system files
+.DS_Store
+
+## npm
+/node_modules/
+/npm-debug.log
+
+## testing
+/coverage/
+
+## temp folders
+/.tmp/
+
+# build
+/_site/
+/dist/
+/out-tsc/
+
+storgbook-static
+custom-elements.json
+bundlemeta.json
+
+# Playwright
+/e2e-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
