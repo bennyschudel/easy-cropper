@@ -63,7 +63,7 @@ export class EasyCropper extends LitElement {
     this.aspectRatio = 1 / 1;
     this.format = 'png';
     this.maxZoom = 5;
-    this.padding = 64;
+    this.padding = undefined;
     this.noPixels = false;
     this.quality = 1.0;
     this.src = undefined;
@@ -352,6 +352,7 @@ export class EasyCropper extends LitElement {
           '_sourceImageAspectRatio',
           '_viewFinderMaxDimensions',
           '_viewFinderDimensions',
+          'aspectRatio',
           'maxZoom',
           'src',
         ])
@@ -401,7 +402,7 @@ export class EasyCropper extends LitElement {
         ${ref(this.rootEl)}
         class="easy-cropper"
         style=${styleMap({
-          '--padding': `${this.padding}px`,
+          '--padding': this.padding ? this.padding + 'px' : undefined,
           '--view-finder--width': this.viewFinderWidth + 'px',
           '--view-finder--height': this.viewFinderHeight + 'px',
         })}
@@ -431,6 +432,7 @@ export class EasyCropper extends LitElement {
 
   static styles = css`
     :host {
+      --padding: 64px;
       --view-finder--dim-color: hsla(0, 0%, 0%, 0.8);
       --view-finder--border-color: hsla(0, 100%, 100%, 0.5);
 

@@ -38,7 +38,7 @@ attribute-name         | type    | default value              | description
 `aspectRatio`          | Number  | 1.0                        | The aspect ratio to be cropped.
 `format`               | String  | png (png\|jpg\|jpeg\|webp) | The format of the output image to be generated.
 `maxZoom`              | Number  | 5                          | The maximum zoom level allowed.
-`padding`              | Number  | 64                         | The padding around the view-finder.
+`padding`              | Number  |                            | The padding around the view-finder.
 `noPixels`             | Boolean | false                      | Whether to display interpolated pixels when the image is zoomed in or not.
 `quality`              | Number  | 1.0 (0 - 1.0)              | A number indicating the image quality if the format is "jpeg" or "webp".
 `src`                  | String  |                            | The source URL of the image to be cropped.
