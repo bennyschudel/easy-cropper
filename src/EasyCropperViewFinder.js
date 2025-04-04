@@ -58,6 +58,8 @@ export class EasyCropperViewFinder extends LitElement {
 
   static styles = css`
     :host {
+      --border-color: hsla(0, 100%, 100%, 0.5);
+
       box-sizing: border-box;
       display: flex;
       justify-content: center;
@@ -71,7 +73,7 @@ export class EasyCropperViewFinder extends LitElement {
     }
 
     .view-finder {
-      border: 1px solid hsla(0, 100%, 100%, 0.5);
+      border: 1px solid var(--border-color);
 
       width: var(--width);
       height: var(--height);

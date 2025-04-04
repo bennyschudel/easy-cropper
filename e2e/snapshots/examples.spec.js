@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 
 const examples = [
   'default',
+  'data-url',
 ];
 
 examples.forEach((name) => {

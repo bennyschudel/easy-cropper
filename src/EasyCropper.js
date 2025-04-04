@@ -158,15 +158,14 @@ export class EasyCropper extends LitElement {
 
     const [maxWidth, maxHeight] = this._viewFinderMaxDimensions;
 
-    if (aspectRatio < 1) {
-      return [maxHeight * aspectRatio, maxHeight];
-    } else if (aspectRatio > 1) {
-      return [maxWidth, maxWidth / aspectRatio];
+    const newWidth = maxHeight * aspectRatio;
+    const newHeight = maxWidth / aspectRatio;
+
+    if (newWidth <= maxWidth) {
+      return [newWidth, maxHeight];
+    } else {
+      return [maxWidth, newHeight];
     }
-
-    const size = Math.min(maxWidth, maxHeight);
-
-    return [size, size];
   }
 
   // --- methods ---
@@ -421,7 +420,8 @@ export class EasyCropper extends LitElement {
           <easy-cropper-view-finder
             width=${this.viewFinderWidth}
             height=${this.viewFinderHeight}
-          ></easy-cropper-view-finder>
+          >
+          </easy-cropper-view-finder>
         </div>
       </div>
     `;
@@ -431,6 +431,9 @@ export class EasyCropper extends LitElement {
 
   static styles = css`
     :host {
+      --view-finder--dim-color: hsla(0, 0%, 0%, 0.8);
+      --view-finder--border-color: hsla(0, 100%, 100%, 0.5);
+
       box-sizing: border-box;
       display: flex;
       position: absolute;
@@ -461,9 +464,11 @@ export class EasyCropper extends LitElement {
     }
 
     easy-cropper-view-finder {
+      --border-color: var(--view-finder--border-color);
+
       position: absolute;
       pointer-events: none;
-      box-shadow: 0 0 0 9999px hsla(0, 0%, 0%, 0.8);
+      box-shadow: 0 0 0 9999px var(--view-finder--dim-color);
     }
 
     .canvas {
