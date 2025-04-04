@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
 
 import BundleSize from 'vite-plugin-bundlesize';
 
@@ -19,6 +20,7 @@ export default defineConfig({
         },
       },
     }),
+    tailwindcss(),
     BundleSize({
       stats: 'all',
       limits: [

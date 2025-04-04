@@ -1,5 +1,5 @@
 {
-  "name": "rgb-color-mixer-pages",
+  "name": "easy-cropper-pages",
   "homepage": "https://bennyschudel.github.io/rgb-color-mixer",
   "version": "0.0.0",
   "type": "module",
@@ -11,12 +11,21 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.2",
     "@vueuse/core": "^13.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "easy-cropper": "^0.3.0-alpha2",
+    "lucide-vue-next": "^0.487.0",
+    "reka-ui": "^2.2.0",
+    "tailwind-merge": "^3.1.0",
+    "tailwindcss": "^4.1.2",
+    "tw-animate-css": "^1.2.5",
     "vite-plugin-bundlesize": "^0.1.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@types/node": "^22.14.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
     "gh-pages": "^6.3.0",
