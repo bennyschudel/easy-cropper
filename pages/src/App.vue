@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, useTemplateRef, reactive, watch, ref } from 'vue';
+import { computed, onMounted, useTemplateRef, reactive, watch } from 'vue';
 import { useDark, useToggle } from '@vueuse/core';
 
 import 'easy-cropper';
@@ -91,7 +91,7 @@ onMounted(() => {});
       <a href="http://github.com/bennyschudel/easy-cropper">Github</a>
     </div>
 
-    <h1>&lt;easy-cropper&gt;</h1>
+    <h1 class="font-bold">&lt;easy-cropper&gt;</h1>
     <div class="container">
       <easy-cropper
         ref="cropper0"

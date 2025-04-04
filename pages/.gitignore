@@ -20,7 +20,7 @@
 /dist/
 /out-tsc/
 
-storgbook-static
+storybook-static
 custom-elements.json
 bundlemeta.json
 

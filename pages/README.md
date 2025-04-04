@@ -1,3 +1,3 @@
-# RGB Color Mixer Website
+# Easy Cropper Website
 
-This is the repository of the RGB Color Mixer Website deployed on gh-pages.
+This is the repository of the Easy Cropper Website deployed on gh-pages.
