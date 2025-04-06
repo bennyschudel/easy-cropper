@@ -1,6 +1,4 @@
-#### [Website](https://bennyschudel.github.io/easy-cropper)
-
-#### [Github](https://github.com/bennyschudel/easy-cropper)
+#### [Website](https://bennyschudel.github.io/easy-cropper) &middot; [Github](https://github.com/bennyschudel/easy-cropper)
 
 ## Easy Cropper API Documentation
 

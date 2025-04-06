@@ -79,7 +79,7 @@ export class EasyCropper extends LitElement {
     this.quality = 1.0;
     this.src = undefined;
 
-    this.onCrop = (canvas) => {};
+    this.onCrop = () => {};
   }
 
   // --- accessors ---
@@ -253,7 +253,7 @@ export class EasyCropper extends LitElement {
         resolve(image);
       };
 
-      image.onerror = (error) => {
+      image.onerror = () => {
         reject('Failed to load image.');
       };
 
@@ -273,8 +273,6 @@ export class EasyCropper extends LitElement {
 
     try {
       return this.loadImage(src);
-    } catch (error) {
-      throw error;
     } finally {
       URL.revokeObjectURL(src);
     }
