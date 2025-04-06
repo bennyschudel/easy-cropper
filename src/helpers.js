@@ -12,12 +12,7 @@
 export function createEvent(
   name,
   value,
-  {
-    bubbles = true,
-    cancelable = true,
-    clone = false,
-    composed = true,
-  } = {},
+  { bubbles = true, cancelable = true, clone = false, composed = true } = {},
 ) {
   const event = new Event(name, {
     bubbles,
@@ -28,4 +23,24 @@ export function createEvent(
   event.value = clone ? window.structuredClone(value) : value;
 
   return event;
+}
+
+/**
+ * Copies an image to the clipboard.
+ *
+ * @param {string} mimeType - The MIME type of the image (e.g., "image/png", "image/jpeg").
+ * @param {Blob} blob - The image data as a Blob object.
+ * @returns {Promise<void>} A promise that resolves when the image is successfully copied to the clipboard.
+ * @throws {Error} Throws an error if the clipboard operation fails.
+ */
+export function copyImageToClipboard(mimeType, blob) {
+  try {
+    return navigator.clipboard.write([
+      new ClipboardItem({
+        [mimeType]: blob,
+      }),
+    ]);
+  } catch (error) {
+    throw error;
+  }
 }

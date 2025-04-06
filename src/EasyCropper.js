@@ -6,6 +6,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import * as d3 from './d3';
 
 import { checkMapHasAnyKey, minZero } from './utils';
+import { copyImageToClipboard } from './helpers';
+
+/**
+ * @typedef {"png"|"jpg"|"jpeg"|"webp"} ImageFormat
+ */
+
+/**
+ * @typedef {Object} ImageTransform
+ * @property {number} transform.k - The scale factor for zooming.
+ * @property {number} transform.x - The x-coordinate for translation.
+ * @property {number} transform.y - The y-coordinate for translation.
+ */
 
 /**
  * A custom element to provide functionality for cropping images.
@@ -15,14 +27,14 @@ import { checkMapHasAnyKey, minZero } from './utils';
  * @class
  * @extends {LitElement}
  *
- * @property {number} aspectRatio - The aspect ratio to be cropped.
- * @property {("png"|"jpg"|"jpeg"|"webp")} format - The format of the output image to be generated.
+ * @property {string} aspectRatio - The aspect ratio to be cropped. Can be either a value or an equation like 16:9.
+ * @property {ImageFormat} format - The format of the output image to be generated.
  * @property {number} maxZoom - The maximum zoom level allowed. Default is 5.
  * @property {number} padding - The padding around the view-finder in pixels. Default is 64px.
  * @property {boolean} noPixels - Whether to display interpolated pixels when the image is zoomed in or not.
  * @property {number} quality - A number between 0 and 1 indicating the image quality if the format is "jpeg" or "webp".
  * @property {string} src - The source URL of the image to be cropped.
-*/
+ */
 export class EasyCropper extends LitElement {
   rootEl = createRef();
   viewFinderEl = createRef();
@@ -33,10 +45,10 @@ export class EasyCropper extends LitElement {
     _rootDimensions: { state: true },
     _viewFinderMaxDimensions: { state: true },
     _imageTransform: { state: true },
-    _minZoom: { type: Number },  // readonly
+    _minZoom: { type: Number },
     _sourceImageAspectRatio: { state: true },
     // ---
-    aspectRatio: { type: Number },
+    aspectRatio: { type: String },
     format: { type: String },
     maxZoom: { type: Number },
     padding: { type: Number },
@@ -49,6 +61,7 @@ export class EasyCropper extends LitElement {
 
   _zoomBehaviour;
   _sourceImageData;
+  _aspectRatio;
 
   constructor() {
     super();
@@ -60,7 +73,7 @@ export class EasyCropper extends LitElement {
     this._viewFinderDimensions = [0, 0];
     this._viewFinderMaxDimensions = [0, 0];
 
-    this.aspectRatio = 1 / 1;
+    this.aspectRatio = "1:1";
     this.format = 'png';
     this.maxZoom = 5;
     this.padding = undefined;
@@ -69,6 +82,35 @@ export class EasyCropper extends LitElement {
     this.src = undefined;
 
     this.onCrop = (canvas) => {};
+  }
+
+  // --- accessors ---
+
+  /**
+   * Gets the aspect ratio of the cropped areaa.
+   *
+   * @returns {number} The current aspect ratio.
+   */
+  get aspectRatio() {
+    return this._aspectRatio;
+  }
+
+  /**
+   * Sets the aspect ratio for the cropped area.
+   *
+   * @param {string|number} value - The aspect ratio to set. Can be a numeric value or a string in the format "16:9".
+   * @throws {Error} If the provided value is not a valid value.
+   */
+  set aspectRatio(value) {
+    const [a, b] = String(value).split(':');
+
+    const ratio = b === undefined ? Number(a) : Number(a) / Number(b);
+
+    if (isNaN(ratio)) {
+      throw new Error('Invalid aspect ratio.');
+    }
+
+    this._aspectRatio = ratio;
   }
 
   // --- getters ---
@@ -168,6 +210,17 @@ export class EasyCropper extends LitElement {
     }
   }
 
+  #getMimeType(format = this.format) {
+    const type = {
+      jpeg: 'image/jpeg',
+      jpg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp',
+    }[format];
+
+    return type;
+  }
+
   // --- methods ---
 
   /**
@@ -175,29 +228,51 @@ export class EasyCropper extends LitElement {
    * and calculates the aspect ratio of the source image.
    *
    * @param {string} src - The source URL of the image to load.
-   * @returns {HTMLImageElement} The loaded image element.
+   * @returns {Promise<HTMLImageElement>} A promise that resolves to the loaded image element.
    * @throws {Error} Throws an error if the image fails to load.
    */
   loadImage(src) {
-    const image = new Image();
+    return new Promise((resolve, reject) => {
+      const image = new Image();
 
-    image.onload = () => {
-      const { width, height } = image;
+      image.onload = () => {
+        const { width, height } = image;
 
-      this._sourceImageData = image;
-      this._sourceImageAspectRatio = width / height;
+        this._sourceImageData = image;
+        this._sourceImageAspectRatio = width / height;
 
-      this.imageEl.value.setAttribute('href', src);
-    };
+        this.imageEl.value.setAttribute('href', src);
 
-    image.onerror = (error) => {
-      throw new Error('Failed to load image.');
-    };
+        resolve(image);
+      };
 
-    image.src = src;
+      image.onerror = (error) => {
+        reject('Failed to load image.');
+      };
 
-    return image;
+      image.src = src;
+    });
   }
+
+  /**
+   * Loads an image from a Blob object.
+   *
+   * @param {Blob} blob - The Blob object containing the image data.
+   * @returns {Promise<HTMLImageElement>} A promise that resolves to the loaded image element.
+   * @throws {Error} Throws an error if the image fails to load.
+   */
+  loadImageBlob(blob) {
+    const src = URL.createObjectURL(blob);
+
+    try {
+      return this.loadImage(src);
+    } catch (error) {
+      throw error;
+    } finally {
+      URL.revokeObjectURL(src);
+    }
+  }
+
   /**
    * Generates a cropped canvas element based on the current zoom and pan transformations
    * applied to the canvas element. The cropped image is returned as a data URL.
@@ -211,7 +286,7 @@ export class EasyCropper extends LitElement {
 
     const p1 = transform.invert([0, 0]);
     const p2 = transform.invert([width, 0]);
-    const p3 = transform.invert([width, height]);
+    // const p3 = transform.invert([width, height]);
     const p4 = transform.invert([0, height]);
 
     const offsetX = minZero(Math.round(p1[0]));
@@ -244,17 +319,12 @@ export class EasyCropper extends LitElement {
   /**
    * Generates a cropped image from the canvas in the specified format and quality.
    *
-   * @param {("png"|"jpg"|"jpeg"|"webp")} format - The format of the output image to be generated.
-   * @param {number} quality - A number between 0 and 1 indicating the image quality if the format is "jpeg" or "webp".
+   * @param {ImageFormat} [format=this.format] - The format of the image.
+   * @param {number} [quality=this.quality] - The quality of the image (applicable for "jpeg" or "webp", range: 0 to 1).
    * @returns {string} A data URL containing the cropped image in the specified format and quality.
    */
   getCroppedImage(format = this.format, quality = this.quality) {
-    const type = {
-      jpeg: "image/jpeg",
-      jpg: "image/jpeg",
-      png: "image/png",
-      webp: "image/webp",
-    }[format];
+    const type = this.#getMimeType(format);
 
     const canvas = this.getCroppedCanvas(format, quality);
 
@@ -262,15 +332,45 @@ export class EasyCropper extends LitElement {
   }
 
   /**
+   * Asynchronously generates a cropped image as a Blob object.
+   *
+   * @param {ImageFormat} [format=this.format] - The format of the image.
+   * @param {number} [quality=this.quality] - The quality of the image (applicable for "jpeg" or "webp", range: 0 to 1).
+   * @returns {Promise<Blob>} A promise that resolves to the cropped image as a Blob.
+   * @throws {Error} If an error occurs while generating the Blob.
+   */
+  async getCroppedImageAsBlob(format = this.format, quality = this.quality) {
+    const type = this.#getMimeType(format);
+
+    const canvas = this.getCroppedCanvas(format, quality);
+
+    const promise = new Promise((resolve, reject) => {
+      try {
+        canvas.toBlob(resolve, type, quality);
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    const blob = await promise;
+
+    return blob;
+  }
+
+  /**
    * Initiates a download of the cropped image with the specified options.
    *
    * @param {Object} [options={}] - Options for the cropped image download.
    * @param {string} [options.name="cropped-image"] - The name of the downloaded file (without extension).
-   * @param {("png"|"jpg"|"jpeg"|"webp")} [options.format="png"] - The format of the image.
-   * @param {number} [options.quality=1] - The quality of the image (applicable for "jpeg" or "webp", range: 0 to 1).
+   * @param {ImageFormat} [options.format=this.format] - The format of the image.
+   * @param {number} [options.quality=this.quality] - The quality of the image (applicable for "jpeg" or "webp", range: 0 to 1).
    * @returns {void} Does not return anything but the browser is asked to start the download.
    */
-  downloadCroppedImage({ name = "cropped-image", format = this.format, quality = this.quality } = {}) {
+  downloadCroppedImage({
+    name = 'cropped-image',
+    format = this.format,
+    quality = this.quality,
+  } = {}) {
     const croppedImage = this.getCroppedImage(format, quality);
     const link = document.createElement('a');
 
@@ -281,7 +381,19 @@ export class EasyCropper extends LitElement {
   }
 
   /**
-   * Sets the zoom level to 1:1.
+   * Copies the cropped image to the clipboard.
+   *
+   * @returns {Promise<void>} Resolves when the image has been successfully copied to the clipboard.
+   * @throws {Error} If there is an issue generating the cropped image or copying it to the clipboard.
+   */
+  copyCroppedImage() {
+    const blob = this.getCroppedImageAsBlob('png');
+
+    return copyImageToClipboard('image/png', blob);
+  }
+
+  /**
+   * Sets the zoom level to 1:1 and centers the view.
    *
    * @returns {void} Does not return anything.
    */
@@ -296,17 +408,39 @@ export class EasyCropper extends LitElement {
    * @returns {void} Does not return anything.
    */
   resetZoom(scalar = this._minZoom) {
-    const { sourceWidth, sourceHeight } = this;
+    const { sourceWidth, sourceHeight, _zoomBehaviour } = this;
 
     const $canvasEl = d3.select(this.canvasEl.value);
 
-    this._zoomBehaviour.scaleTo($canvasEl, scalar);
+    _zoomBehaviour.scaleTo($canvasEl, scalar);
 
-    this._zoomBehaviour.translateTo(
+    _zoomBehaviour.translateTo(
       $canvasEl,
       sourceWidth / 2,
       sourceHeight / 2,
     );
+  }
+
+  /**
+   * Retrieves the current image transformation parameters.
+   *
+   * @returns {ImageTransform} An object containing the image transformation properties:
+   */
+  getImageTransform() {
+    const { k, x, y } = this._imageTransform;
+
+    return { k, x, y };
+  }
+
+  /**
+   * Sets the current image transformation parameters.
+   *
+   * @param {ImageTransform} transform - The transformation object.
+   */
+  setImageTransform({ k, x, y }) {
+    const $canvasEl = d3.select(this.canvasEl.value);
+
+    this._zoomBehaviour.transform($canvasEl, d3.zoomIdentity.translate(x, y).scale(k));
   }
 
   // --- lifecycle ---
@@ -360,15 +494,12 @@ export class EasyCropper extends LitElement {
         const [width, height] = this._viewFinderDimensions;
         const { sourceWidth, sourceHeight } = this;
 
-        if (
-          !width ||
-          !height ||
-          !sourceWidth ||
-          !sourceHeight
-        )
-          return;
+        if (!width || !height || !sourceWidth || !sourceHeight) return;
 
-        const _minZoom = (this._minZoom = Math.max(width / sourceWidth, height / sourceHeight));
+        const _minZoom = (this._minZoom = Math.max(
+          width / sourceWidth,
+          height / sourceHeight,
+        ));
 
         this._zoomBehaviour
           .scaleExtent([_minZoom, this.maxZoom])
@@ -392,7 +523,7 @@ export class EasyCropper extends LitElement {
     }
   }
 
-    // --- render
+  // --- render
 
   render() {
     const transform = this.#imageTransform;
@@ -414,7 +545,13 @@ export class EasyCropper extends LitElement {
           height=${this.viewFinderHeight}
         >
           <g transform=${transform} transform-origin="0 0">
-            <image ${ref(this.imageEl)} class="image" image-rendering=${ifDefined(this.noPixels ? undefined : "pixelated")}/>
+            <image
+              ${ref(this.imageEl)}
+              class="image"
+              image-rendering=${ifDefined(
+                this.noPixels ? undefined : 'pixelated',
+              )}
+            />
           </g>
         </svg>
         <div class="view-finder" ${ref(this.viewFinderEl)}>
@@ -433,8 +570,14 @@ export class EasyCropper extends LitElement {
   static styles = css`
     :host {
       --padding: 64px;
-      --view-finder--dim-color: hsla(0, 0%, 0%, 0.8);
-      --view-finder--border-color: hsla(0, 100%, 100%, 0.5);
+      --view-finder--dim-color: light-dark(
+        hsla(0, 100%, 100%, 0.8),
+        hsla(0, 0%, 0%, 0.8)
+      );
+      --view-finder--border-color: light-dark(
+        hsla(0, 0%, 0%, 0.5),
+        hsla(0, 100%, 100%, 0.5)
+      );
 
       box-sizing: border-box;
       display: flex;
