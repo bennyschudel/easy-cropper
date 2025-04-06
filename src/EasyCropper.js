@@ -371,7 +371,6 @@ export class EasyCropper extends LitElement {
    * @param {string} [options.name="cropped-image"] - The name of the downloaded file (without extension).
    * @param {ImageFormat} [options.format=this.format] - The format of the image.
    * @param {number} [options.quality=this.quality] - The quality of the image (applicable for "jpeg" or "webp", range: 0 to 1).
-   * @returns {void} Does not return anything but the browser is asked to start the download.
    */
   downloadCroppedImage({
     name = 'cropped-image',
@@ -401,8 +400,6 @@ export class EasyCropper extends LitElement {
 
   /**
    * Sets the zoom level to 1:1 and centers the view.
-   *
-   * @returns {void} Does not return anything.
    */
   zoomToNormal() {
     this.resetZoom(1);
@@ -412,7 +409,6 @@ export class EasyCropper extends LitElement {
    * Resets the zoom level of the canvas to an optional scalar value and centers the view.
    *
    * @param {number} [scalar=this._minZoom] - The zoom level to reset to. Defaults to the minimum zoom level.
-   * @returns {void} Does not return anything.
    */
   resetZoom(scalar = this._minZoom) {
     const { sourceWidth, sourceHeight, _zoomBehaviour } = this;
