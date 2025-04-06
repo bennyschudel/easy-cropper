@@ -1,20 +1,25 @@
 import type { App } from 'vue';
 
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription, AlertTitle } from './alert'
+import { Badge } from './badge';
+import { Button } from './button';
+import { Checkbox } from './checkbox';
+import { Input } from './input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-
-import UiField from '@/components/UiField.vue';
+} from './select';
+import { Separator } from './separator'
+import { Slider } from './slider';
 
 const components = {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Badge,
   Button,
   Checkbox,
   Input,
@@ -23,9 +28,8 @@ const components = {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Separator,
   Slider,
-  // ---
-  UiField,
 };
 
 export default {

@@ -2,10 +2,14 @@ import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
 
-import UiComponents from './components/ui';
+import components  from './components';
+import uiComponents from './components/ui';
+import icons from './icons';
 
 const app = createApp(App);
 
-app.use(UiComponents);
+app.use(components);
+app.use(uiComponents);
+app.use(icons);
 
 app.mount('#app');
