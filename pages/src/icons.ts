@@ -1,10 +1,11 @@
 import type { App } from 'vue';
 
-import { Book, Clipboard, Download, Moon, Sun } from 'lucide-vue-next';
+import { Book, BookA, Clipboard, Download, Moon, Sun } from 'lucide-vue-next';
 import { GitHubIcon as Github } from 'vue3-simple-icons';
 
 const icons = {
   Book,
+  BookA,
   Clipboard,
   Download,
   Github,

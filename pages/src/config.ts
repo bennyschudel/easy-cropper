@@ -1,5 +1,8 @@
-const { VITE_APP_VERSION } = import.meta.env;
+const { VITE_APP_VERSION, VITE_API_DOCUMENTATION_URL, VITE_GITHUB_URL } =
+  import.meta.env;
 
 export const APP_VERSION = VITE_APP_VERSION;
+export const API_DOCUMENTATION_URL = VITE_API_DOCUMENTATION_URL;
+export const GITHUB_URL = VITE_GITHUB_URL;
 
-export {}
+export {};

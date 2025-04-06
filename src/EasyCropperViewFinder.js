@@ -3,9 +3,11 @@ import { ref, createRef } from 'lit/directives/ref.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 /**
- * A custom element for cropping an image using a predefined of free ratio.
- *
- * This component can crop a given image into a different aspect ratio and size.
+ * @typedef {"portrait"|"landscape"|"square"} Orientation
+ */
+
+/**
+ * A custom element to show a view-finder.
  *
  * @class
  * @extends {LitElement}
@@ -27,10 +29,25 @@ export class EasyCropperViewFinder extends LitElement {
 
   // --- getters ---
 
+  /**
+   * Gets the aspect ratio of the view-finder.
+   *
+   * @type {number}
+   * @returns {number} The aspect ratio (width / height).
+   */
   get aspectRatio() {
     return this.width / this.height;
   }
 
+  /**
+   * Determines the orientation of the cropper view based on the aspect ratio.
+   *
+   * @type {Orientation}
+   * @returns {Orientation} The orientation of the cropper view:
+   * - `'portrait'` if the aspect ratio is less than 1.
+   * - `'landscape'` if the aspect ratio is greater than 1.
+   * - `'square'` if the aspect ratio is equal to 1.
+   */
   get orientation() {
     return this.aspectRatio < 1 ? 'portrait' : this.aspectRatio > 1 ? 'landscape' : 'square';
   }

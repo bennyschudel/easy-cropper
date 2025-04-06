@@ -3,6 +3,8 @@ import { EasyCropperViewFinder } from './EasyCropperViewFinder.js';
 import { EasyCropper } from './EasyCropper.js';
 
 export {
+  EasyCropperViewFinder,
+  // ---
   EasyCropper,
 };
 

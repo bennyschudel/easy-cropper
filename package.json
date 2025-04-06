@@ -27,7 +27,9 @@
     "analyze": "cem analyze --litelement --outdir dist --exclude pages",
     "e2e": "npx playwright test",
     "e2e:report": "npx playwright show-report",
-    "e2e:update": "npx playwright test --update-snapshots"
+    "e2e:update": "npx playwright test --update-snapshots",
+    "docs:api": "./tasks/generate-api-docs.sh",
+    "pages:deploy": "./tasks/build-and-deploy-pages.sh"
   },
   "dependencies": {},
   "peerDependencies": {

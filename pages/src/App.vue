@@ -6,7 +6,7 @@ import { Toaster, toast } from 'vue-sonner';
 import 'easy-cropper';
 import { EasyCropper } from 'easy-cropper';
 
-import { APP_VERSION } from './config';
+import { APP_VERSION, API_DOCUMENTATION_URL, GITHUB_URL } from './config';
 
 type DownloadArgsType = {
   name: string;
@@ -166,7 +166,12 @@ onMounted(() => {});
         {{ isDark ? 'Dark' : 'Light' }}
       </Button>
       <Button as-child variant="link">
-        <a href="http://github.com/bennyschudel/easy-cropper">
+        <a :href="API_DOCUMENTATION_URL">
+          <BookAIcon />
+          API Documentation</a>
+      </Button>
+      <Button as-child variant="link">
+        <a :href="GITHUB_URL">
           <GithubIcon />
           Github</a>
       </Button>

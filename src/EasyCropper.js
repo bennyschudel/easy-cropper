@@ -22,8 +22,6 @@ import { copyImageToClipboard } from './helpers';
 /**
  * A custom element to provide functionality for cropping images.
  *
- * This component allows you to crop an image into a different aspect ratio.
- *
  * @class
  * @extends {LitElement}
  *
@@ -89,6 +87,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the aspect ratio of the cropped areaa.
    *
+   * @type {number}
    * @returns {number} The current aspect ratio.
    */
   get aspectRatio() {
@@ -124,6 +123,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the width of the root element.
    *
+   * @type {number}
    * @returns {number} The width of the root element in pixels.
    */
   get width() {
@@ -133,6 +133,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the height of the root element.
    *
+   * @type {number}
    * @returns {number} The height of the root element in pixels.
    */
   get height() {
@@ -142,6 +143,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the width of the view-finder.
    *
+   * @type {number}
    * @returns {number} The width of the view-finder in pixels.
    */
   get viewFinderWidth() {
@@ -151,6 +153,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the height of the view-finder.
    *
+   * @type {number}
    * @returns {number} The height of the view-finder in pixels.
    */
   get viewFinderHeight() {
@@ -160,6 +163,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the width of the source image data.
    *
+   * @type {number}
    * @returns {number | undefined} The width of the source image, or undefined if the source image data is not available.
    */
   get sourceWidth() {
@@ -169,6 +173,7 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the height of the source image data.
    *
+   * @type {number}
    * @returns {number | undefined} The height of the source image data, or undefined if no source image data is available.
    */
   get sourceHeight() {
@@ -178,6 +183,7 @@ export class EasyCropper extends LitElement {
   /**
    * Getter to check if a source image is available.
    *
+   * @type {boolean}
    * @returns {boolean} Returns `true` if a source image is set, otherwise `false`.
    */
   get hasSourceImage() {
@@ -187,7 +193,8 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the zoom extent for the crop area.
    *
-   * @returns {[number, number]} An array containing the minimum and maximum zoom levels.
+   * @type {Array<number, number>}
+   * @returns {Array<number, number>} An array containing the minimum and maximum zoom levels.
    */
   get zoomExtent() {
     return [this._minZoom, this.maxZoom];
