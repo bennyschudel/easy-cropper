@@ -5,11 +5,9 @@ This is an image crop web-component built using lit and d3-zoom.
 ## Without installation
 
 ```html
-  <script type="module" src="https://esm.sh/lit"></script>
-  <script type="module" src="https://esm.sh/d3-zoom"></script>
   <script type="module" src="https://esm.sh/easy-cropper"></script>
 
-  <easy-cropper aspectRatio="1.777"></easy-cropper>
+  <easy-cropper aspectRatio="16:9"></easy-cropper>
 ```
 
 ## Installation
