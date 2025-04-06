@@ -7,9 +7,12 @@
   </head>
   <body>
     <div id="container">
-      <easy-cropper id="cropIt" src="./src/assets/image-01.jpg" aspectRatio="1"></easy-cropper>
+      <easy-cropper id="cropIt" src="./src/assets/image-01.jpg" aspectRatio="1:1"></easy-cropper>
     </div>
-    <button id="download">Download</button>
+    <div id="actions">
+      <button id="download">Download</button>
+      <button id="copy">Copy</button>
+    </div>
 
     <div id="liveImage"></div>
 
@@ -18,10 +21,15 @@
 
       const cropItEl = document.getElementById('cropIt');
       const downloadEl = document.getElementById('download');
+      const copyEl = document.getElementById('copy');
       const liveImageEl = document.getElementById('liveImage');
 
       downloadEl.addEventListener('click', () => {
         cropItEl.downloadCroppedImage();
+      });
+
+      copyEl.addEventListener('click', () => {
+        cropItEl.copyCroppedImage();
       });
 
       cropItEl.onCrop = (canvas) => {

@@ -35,7 +35,7 @@ There are a few attributes that could be set.
 
 attribute-name         | type    | default value              | description
 --------------         | ----    | -------------              | -----------
-`aspectRatio`          | Number  | 1.0                        | The aspect ratio to be cropped.
+`aspectRatio`          | String  | 1:1                        | The aspect ratio to be cropped. Can be either a value or an equation like 16:9.
 `format`               | String  | png (png\|jpg\|jpeg\|webp) | The format of the output image to be generated.
 `maxZoom`              | Number  | 5                          | The maximum zoom level allowed.
 `padding`              | Number  |                            | The padding around the view-finder.
@@ -74,12 +74,19 @@ element.downloadCroppedImage({ name: "my-image", format: "jpg", quality: 0.8 });
 
 Initiates a download of the cropped image with the specified options.
 
+### copyCroppedImage()
+```javascript
+await element.copyCroppedImage();
+```
+
+Copies the cropped image to the clipboard in the "image/png" format.
+
 ### zoomToNormal()
 ```javascript
 element.zoomToNormal();
 ```
 
-Sets the zoom level to 1:1.Resets the zoom level of the canvas to an optional scalar value and centers the view.
+Sets the zoom level to 1:1 and centers the view.
 
 ### resetZoom(scalar = minZoom)
 ```javascript
@@ -87,6 +94,20 @@ element.resetZoom();
 ```
 
 Resets the zoom level of the canvas to an optional scalar value and centers the view.
+
+### getImageTransform()
+```javascript
+const transform = element.getImageTransform();
+```
+
+Retrieves the current image transformation parameters.
+
+### setImageTransform({ k, x, y })
+```javascript
+element.setTransform(transform);
+```
+
+Sets the current image transformation parameters.
 
 ## Examples
 
