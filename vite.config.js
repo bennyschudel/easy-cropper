@@ -2,6 +2,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
+import eslint from 'vite-plugin-eslint';
 import BundleSize from 'vite-plugin-bundlesize';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -32,6 +33,7 @@ export default defineConfig(({ command, mode }) => {
       chunkSizeWarningLimit: 200,
     },
     plugins: [
+      eslint(),
       BundleSize({
         stats: 'all',
         limits: [

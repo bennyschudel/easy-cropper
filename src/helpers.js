@@ -34,13 +34,9 @@ export function createEvent(
  * @throws {Error} Throws an error if the clipboard operation fails.
  */
 export function copyImageToClipboard(mimeType, blob) {
-  try {
-    return navigator.clipboard.write([
-      new ClipboardItem({
-        [mimeType]: blob,
-      }),
-    ]);
-  } catch (error) {
-    throw error;
-  }
+  return navigator.clipboard.write([
+    new ClipboardItem({
+      [mimeType]: blob,
+    }),
+  ]);
 }
