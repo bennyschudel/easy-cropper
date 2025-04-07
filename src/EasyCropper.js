@@ -268,11 +268,11 @@ export class EasyCropper extends LitElement {
    * @returns {Promise<HTMLImageElement>} A promise that resolves to the loaded image element.
    * @throws {Error} Throws an error if the image fails to load.
    */
-  loadImageBlob(blob) {
+  async loadImageBlob(blob) {
     const src = URL.createObjectURL(blob);
 
     try {
-      return this.loadImage(src);
+      return await this.loadImage(src);
     } finally {
       URL.revokeObjectURL(src);
     }
