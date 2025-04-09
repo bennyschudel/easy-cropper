@@ -30,7 +30,7 @@ const toggleDark = useToggle(isDark);
 
 const cropper = useTemplateRef<EasyCropper>('cropper');
 
-const aspectRatios = ['1:1', '3:2', '4:3', '16:9', '2:3', '3:4', '9:16'];
+const aspectRatios = ['1:1', '3:2', '4:3', '5:4', '16:9', '16:10', '2:3', '3:4', '4:5', '9:16', '10:16'];
 
 const formats = ['jpg', 'jpeg', 'png', 'webp'];
 
