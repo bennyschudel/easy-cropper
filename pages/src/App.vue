@@ -195,7 +195,7 @@ onMounted(() => {});
       <easy-cropper
         ref="cropper"
         v-bind="componentArgs"
-        :src="`${BASE_URL}image-01.jpg`"
+        :src="`${BASE_URL}/image-01.jpg`"
       ></easy-cropper>
     </div>
 
