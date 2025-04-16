@@ -85,7 +85,7 @@ export class EasyCropper extends LitElement {
   // --- accessors ---
 
   /**
-   * Gets the aspect ratio of the cropped areaa.
+   * Gets the aspect ratio of the cropped area.
    *
    * @type {number}
    * @returns {number} The current aspect ratio.
@@ -110,6 +110,15 @@ export class EasyCropper extends LitElement {
     }
 
     this._aspectRatio = ratio;
+  }
+
+  /**
+   * Gets the aspect ratio of the source image.
+   *
+   * @returns {number | undefined} The aspect ratio of the source image or undefined if no source image is loaded.
+   */
+  get sourceAspectRatio() {
+    return this._sourceImageAspectRatio;
   }
 
   // --- getters ---
@@ -434,14 +443,28 @@ export class EasyCropper extends LitElement {
   }
 
   /**
-   * Sets the current image transformation parameters.
+   * Sets the image transformation parameters and ensures the viewport remains constrained.
    *
-   * @param {ImageTransform} transform - The transformation object.
+   * @param {ImageTransform} transform - An object containing the transformation parameters.
    */
   setImageTransform({ k, x, y }) {
     const $canvasEl = d3.select(this.canvasEl.value);
 
-    this._zoomBehaviour.transform($canvasEl, d3.zoomIdentity.translate(x, y).scale(k));
+    const transform = d3.zoomIdentity.translate(x, y).scale(k);
+
+    const { _zoomBehaviour: zoom } = this;
+
+    const extent = zoom.extent();
+    const translateExtent = zoom.translateExtent();
+    const constrain = zoom.constrain();
+
+    function transformFn() {
+      const _extent = extent.apply(this, arguments);
+
+      return constrain(transform, _extent, translateExtent);
+    }
+
+    zoom.transform($canvasEl, transformFn);
   }
 
   // --- lifecycle ---
