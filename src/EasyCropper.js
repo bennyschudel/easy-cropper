@@ -112,22 +112,13 @@ export class EasyCropper extends LitElement {
     this._aspectRatio = ratio;
   }
 
-  /**
-   * Gets the aspect ratio of the source image.
-   *
-   * @returns {number | undefined} The aspect ratio of the source image or undefined if no source image is loaded.
-   */
-  get sourceAspectRatio() {
-    return this._sourceImageAspectRatio;
-  }
-
-  // --- getters ---
+  // --- private getters ---
 
   get #imageTransform() {
     return this._imageTransform.toString();
   }
 
-  // --- private getters ---
+  // --- getters ---
 
   /**
    * Gets the width of the root element.
@@ -190,6 +181,16 @@ export class EasyCropper extends LitElement {
   }
 
   /**
+   * Gets the aspect ratio of the source image.
+   *
+   * @type {number | undefined}
+   * @returns {number | undefined} The aspect ratio of the source image or undefined if no source image is loaded.
+   */
+  get sourceAspectRatio() {
+    return this._sourceImageAspectRatio;
+  }
+
+  /**
    * Getter to check if a source image is available.
    *
    * @type {boolean}
@@ -202,8 +203,8 @@ export class EasyCropper extends LitElement {
   /**
    * Gets the zoom extent for the crop area.
    *
-   * @type {Array<number, number>}
-   * @returns {Array<number, number>} An array containing the minimum and maximum zoom levels.
+   * @type {number[]}
+   * @returns {number[]} An array containing the minimum and maximum zoom levels.
    */
   get zoomExtent() {
     return [this._minZoom, this.maxZoom];

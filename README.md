@@ -1,4 +1,4 @@
-# \<easy-cropper>
+# \<easy-cropper> `0.3.0`
 
 This is an image crop web-component built using lit and d3-zoom.
 
@@ -7,12 +7,12 @@ This is an image crop web-component built using lit and d3-zoom.
 ```html
   <script type="module" src="https://esm.sh/easy-cropper"></script>
 
-  <easy-cropper aspectRatio="16:9"></easy-cropper>
+  <easy-cropper aspectRatio="16:9" src="my-image.jpg"></easy-cropper>
 ```
 
 ## Installation
 
-Install the Crop-it! package
+Install the easy-cropper package
 
 ```bash
 npm install easy-cropper
@@ -43,6 +43,21 @@ attribute-name         | type    | default value              | description
 
 ## Getters
 
+### hasSourceImage
+
+Getter to check if a source image is available.
+
+```javascript
+element.hasSourceImage;
+```
+
+### height
+
+Gets the height of the root element.
+
+```javascript
+element.height;
+```
 
 ### sourceAspectRatio
 
@@ -52,6 +67,57 @@ Returns a `number` or `undefined` if no source image is set.
 ```javascript
 element.sourceAspectRatio;
 ```
+
+### sourceHeight
+
+Gets the height of the source image data.
+Returns a `number` or `undefined` if no source image is set.
+
+```javascript
+element.sourceHeight;
+```
+
+### sourceWidth
+
+Gets the width of the source image data.
+Returns a `number` or `undefined` if no source image is set.
+
+```javascript
+element.sourceWidth;
+```
+
+### viewFinderHeight
+
+Gets the height of the view-finder.
+
+```javascript
+element.viewFinderHeight;
+```
+
+### viewFinderWidth
+
+Gets the width of the view-finder.
+
+```javascript
+element.viewFinderWidth;
+```
+
+### width
+
+Gets the width of the root element.
+
+```javascript
+element.width;
+```
+
+### zoomExtent
+
+Gets the zoom extent for the crop area.
+
+```javascript
+element.zoomExtent;
+```
+
 
 ## Methods
 
