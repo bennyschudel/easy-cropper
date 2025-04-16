@@ -38,74 +38,103 @@ attribute-name         | type    | default value              | description
 `maxZoom`              | Number  | 5                          | The maximum zoom level allowed.
 `padding`              | Number  |                            | The padding around the view-finder.
 `noPixels`             | Boolean | false                      | Whether to display interpolated pixels when the image is zoomed in or not.
-`quality`              | Number  | 1.0 (0 - 1.0)              | A number indicating the image quality if the format is "jpeg" or "webp".
+`quality`              | Number  | 1.0 (0.0 - 1.0)            | A number indicating the image quality if the format is `jpeg` or `webp`.
 `src`                  | String  |                            | The source URL of the image to be cropped.
+
+## Getters
+
+
+### sourceAspectRatio
+
+Gets the aspect ratio of the source image.
+Returns a `number` or `undefined` if no source image is set.
+
+```javascript
+element.sourceAspectRatio;
+```
 
 ## Methods
 
 ### loadImage(src)
+
+Loads the specified image or data-url.
+
 ```javascript
 element.loadImage("my-image.jpg");
 ```
 
-Loads the specified image or data-url.
 
 ### getCroppedCanvas()
+
+Returns a HTMLCanvasElement to be used as a preview for the cropped area.
+
 ```javascript
 element.getCroppedCanvas();
 ```
 
-Returns a HTMLCanvasElement to be used as a preview for the cropped area.
-
 
 ### getCroppedImage(format = this.format, quality = this.quality)
+
+Returns the cropped images as data-url.
+
 ```javascript
 element.getCroppedImage("jpg", 0.8);
 ```
 
-Returns the cropped images as data-url.
 
 ### downloadCroppedImage({ name = "cropped-image", format = "png", quality = 1.0 })
+
+Initiates a download of the cropped image with the specified options.
+
 ```javascript
 element.downloadCroppedImage({ name: "my-image", format: "jpg", quality: 0.8 });
 ```
 
-Initiates a download of the cropped image with the specified options.
 
 ### copyCroppedImage()
+
+Copies the cropped image to the clipboard in the "image/png" format.
+
 ```javascript
 await element.copyCroppedImage();
 ```
 
-Copies the cropped image to the clipboard in the "image/png" format.
 
 ### zoomToNormal()
+
+Sets the zoom level to 1:1 and centers the view.
+
 ```javascript
 element.zoomToNormal();
 ```
 
-Sets the zoom level to 1:1 and centers the view.
 
 ### resetZoom(scalar = minZoom)
+
+Resets the zoom level of the canvas to an optional scalar value and centers the view.
+
 ```javascript
 element.resetZoom();
 ```
 
-Resets the zoom level of the canvas to an optional scalar value and centers the view.
 
 ### getImageTransform()
+
+Retrieves the current image transformation parameters.
+
 ```javascript
 const transform = element.getImageTransform();
 ```
 
-Retrieves the current image transformation parameters.
 
 ### setImageTransform({ k, x, y })
+
+Sets the image transformation parameters and ensures the viewport remains constrained.
+
 ```javascript
 element.setTransform(transform);
 ```
 
-Sets the current image transformation parameters.
 
 ## Examples
 

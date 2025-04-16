@@ -3,7 +3,7 @@
   "description": "A web-component to provide functionality for cropping images.",
   "license": "MIT",
   "author": "Benny Schudel",
-  "version": "0.3.0-alpha5",
+  "version": "0.3.0",
   "type": "module",
   "types": "dist/types/main.d.ts",
   "exports": {
